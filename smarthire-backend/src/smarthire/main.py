@@ -55,6 +55,8 @@ def create_app() -> FastAPI:
             "http://127.0.0.1:3000",
             "http://localhost:8051",
             "http://127.0.0.1:8051",
+            "http://localhost:8086",
+            "http://127.0.0.1:8086",
         ],
         allow_credentials=True,
         allow_methods=["*"],
@@ -172,12 +174,14 @@ def _register_routers(application: FastAPI) -> None:
         config_router,
         feedback_form_router,
         referral_candidate_router,
+        referral_router_v2,
     )
 
     application.include_router(teams_router)
     application.include_router(config_router)
     application.include_router(feedback_form_router)
     application.include_router(referral_candidate_router)
+    application.include_router(referral_router_v2)
 
     # Dev-only router — mock JWT for local testing (never runs in production)
     import os  # noqa: PLC0415

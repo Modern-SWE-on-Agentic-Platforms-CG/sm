@@ -37,6 +37,12 @@ referral_candidate_router = APIRouter(
     tags=["Referral"],
 )
 
+# New referral router matching frontend expected paths
+referral_router_v2 = APIRouter(
+    prefix="/referral",
+    tags=["Referral"],
+)
+
 
 # ===========================================================================
 # Teams
@@ -189,3 +195,76 @@ async def bulk_upload_referrals(
     _user: Annotated[dict[str, Any], Depends(get_current_user)],
 ) -> ResponseDto:
     return ok_response([], "Bulk upload processed")
+
+
+# ===========================================================================
+# Referral V2 — paths expected by SmartHire frontend
+# ===========================================================================
+
+
+@referral_router_v2.get("/my-candidates", response_model=ResponseDto)
+async def get_my_candidates(
+    db: Annotated[AsyncSession, Depends(get_db_session)],
+    current_user: Annotated[dict[str, Any], Depends(get_current_user)],
+    page: int = Query(1, ge=1),
+    pageSize: int = Query(20, ge=1, le=100),
+) -> ResponseDto:
+    """Return referral candidates submitted by the current SPOC user."""
+    from smarthire.models.referral import ReferralCandidateInfo  # noqa: PLC0415
+    from sqlalchemy import select, func  # noqa: PLC0415
+
+    sub = current_user.get("sub", "")
+    offset = (page - 1) * pageSize
+    total_stmt = select(func.count()).select_from(ReferralCandidateInfo).where(
+        ReferralCandidateInfo.created_by == sub
+    )
+    total_result = await db.execute(total_stmt)
+    total = total_result.scalar_one_or_none() or 0
+    stmt = (
+        select(ReferralCandidateInfo)
+        .where(ReferralCandidateInfo.created_by == sub)
+        .offset(offset)
+        .limit(pageSize)
+    )
+    result = await db.execute(stmt)
+    items = [
+        {k: v for k, v in row.__dict__.items() if not k.startswith("_")}
+        for row in result.scalars().all()
+    ]
+    return ok_response([{"items": items, "total": total, "page": page, "pageSize": pageSize}])
+
+
+@referral_router_v2.get("/all", response_model=ResponseDto)
+async def get_all_referrals(
+    db: Annotated[AsyncSession, Depends(get_db_session)],
+    _user: Annotated[dict[str, Any], Depends(get_current_user)],
+    page: int = Query(1, ge=1),
+    pageSize: int = Query(20, ge=1, le=100),
+) -> ResponseDto:
+    """Return all referral candidates (admin view)."""
+    from smarthire.models.referral import ReferralCandidateInfo  # noqa: PLC0415
+    from sqlalchemy import select, func  # noqa: PLC0415
+
+    offset = (page - 1) * pageSize
+    total_result = await db.execute(select(func.count()).select_from(ReferralCandidateInfo))
+    total = total_result.scalar_one_or_none() or 0
+    result = await db.execute(select(ReferralCandidateInfo).offset(offset).limit(pageSize))
+    items = [
+        {k: v for k, v in row.__dict__.items() if not k.startswith("_")}
+        for row in result.scalars().all()
+    ]
+    return ok_response([{"items": items, "total": total, "page": page, "pageSize": pageSize}])
+
+
+@referral_router_v2.get("/analytics", response_model=ResponseDto)
+async def get_referral_analytics(
+    db: Annotated[AsyncSession, Depends(get_db_session)],
+    _user: Annotated[dict[str, Any], Depends(get_current_user)],
+) -> ResponseDto:
+    """Return referral analytics summary."""
+    from smarthire.models.referral import ReferralCandidateInfo  # noqa: PLC0415
+    from sqlalchemy import select, func  # noqa: PLC0415
+
+    total_result = await db.execute(select(func.count()).select_from(ReferralCandidateInfo))
+    total = total_result.scalar_one_or_none() or 0
+    return ok_response([{"total": total, "pending": 0, "selected": 0, "rejected": 0}])
