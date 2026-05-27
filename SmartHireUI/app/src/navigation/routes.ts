@@ -60,12 +60,6 @@ export const routes: RouteConfig[] = [
     requiredRoles: ['RECRUITER', 'PMO'],
   },
   {
-    path: '/candidates/:id',
-    element: CandidateDetailsScreen,
-    label: 'Candidate Details',
-    requiredRoles: ['RECRUITER', 'PMO', 'INTERVIEWER'],
-  },
-  {
     path: '/candidates/weekend-drive',
     element: WeekendDriveScreen,
     label: 'Weekend Drive',
@@ -76,6 +70,12 @@ export const routes: RouteConfig[] = [
     element: TodoListScreen,
     label: 'To-Do List',
     requiredRoles: ['RECRUITER', 'INTERVIEWER'],
+  },
+  {
+      path: '/candidates/:id',
+      element: CandidateDetailsScreen,
+      label: 'Candidate Details',
+      requiredRoles: ['RECRUITER', 'PMO', 'INTERVIEWER'],
   },
 
   // Scheduling

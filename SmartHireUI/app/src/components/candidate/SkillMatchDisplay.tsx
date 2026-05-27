@@ -5,10 +5,19 @@ import React from 'react'
 import type { SkillMatch } from '@appTypes/candidate'
 
 interface SkillMatchDisplayProps {
-  skillMatch: SkillMatch
+  skillMatch: SkillMatch | null | undefined
 }
 
 export const SkillMatchDisplay: React.FC<SkillMatchDisplayProps> = ({ skillMatch }) => {
+  if (!skillMatch) {
+    return (
+      <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">Skill Match Analysis</h3>
+        <p className="text-sm text-gray-500">No skill match data available.</p>
+      </div>
+    )
+  }
+
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6">
       <h3 className="text-lg font-semibold text-gray-900 mb-4">Skill Match Analysis</h3>

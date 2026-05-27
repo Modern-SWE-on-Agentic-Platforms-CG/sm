@@ -1,0 +1,19 @@
+- generic [ref=e6]:
+  - generic [ref=e7]:
+    - img [ref=e9]
+    - heading "SmartHire" [level=1] [ref=e11]
+    - paragraph [ref=e12]: Intelligent Hiring Platform
+  - paragraph [ref=e14]: Demo Login — Choose a role
+  - paragraph [ref=e28]: "Login failed: Failed to fetch"
+  - generic [ref=e15]:
+    - button "Recruiter" [ref=e16]
+    - button "PMO" [ref=e17]
+    - button "Interviewer" [ref=e18]
+    - button "Tower Lead" [ref=e19]
+    - button "Admin" [ref=e20]
+    - button "SPOC" [ref=e21]
+  - generic [ref=e22]:
+    - paragraph [ref=e23]: Or continue with your organization SSO account
+    - button "Sign in with SSO" [ref=e24]:
+      - img [ref=e25]
+      - text: Sign in with SSO

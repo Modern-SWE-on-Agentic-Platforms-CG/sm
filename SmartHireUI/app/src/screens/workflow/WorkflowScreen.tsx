@@ -66,7 +66,7 @@ const WorkflowScreen: React.FC = () => {
           onToggleSelect={handleToggleSelect}
           onSelectAll={handleSelectAll}
           onClearAll={handleClearAll}
-          onViewHistory={(id) => navigate(`/work-flow/history?candidateId=${id}`)}
+          onViewHistory={(id) => navigate(`/workflow/${id}`)}
         />
       </div>
 

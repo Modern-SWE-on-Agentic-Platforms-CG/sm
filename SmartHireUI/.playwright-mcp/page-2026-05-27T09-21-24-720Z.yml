@@ -1,0 +1,40 @@
+- generic [ref=e27]:
+  - complementary [ref=e28]:
+    - navigation [ref=e29]:
+      - link "Dashboard" [ref=e30] [cursor=pointer]:
+        - /url: /dashboard
+        - img [ref=e31]
+        - generic [ref=e33]: Dashboard
+      - link "Candidates" [ref=e34] [cursor=pointer]:
+        - /url: /candidates
+        - img [ref=e35]
+        - generic [ref=e37]: Candidates
+      - link "Scheduling" [ref=e38] [cursor=pointer]:
+        - /url: /booking/form
+        - img [ref=e39]
+        - generic [ref=e41]: Scheduling
+      - link "To-Do List" [ref=e42] [cursor=pointer]:
+        - /url: /todo-list
+        - img [ref=e43]
+        - generic [ref=e45]: To-Do List
+  - generic [ref=e46]:
+    - banner [ref=e47]:
+      - generic [ref=e48]:
+        - generic [ref=e49]:
+          - button "Toggle sidebar" [ref=e50]:
+            - img [ref=e51]
+          - heading "SmartHire" [level=1] [ref=e53]
+        - generic [ref=e54]:
+          - generic [ref=e55]:
+            - generic [ref=e56]:
+              - paragraph [ref=e57]: Recruiter
+              - paragraph [ref=e58]: Recruiter
+            - generic [ref=e59]: R
+          - button "Logout" [ref=e60]
+    - main [ref=e61]:
+      - generic [ref=e63]:
+        - generic [ref=e64]:
+          - heading "To-Do List" [level=1] [ref=e65]
+          - paragraph [ref=e66]: Candidate pipeline overview
+        - paragraph [ref=e68]: Candidate pipeline view coming soon
+  - region

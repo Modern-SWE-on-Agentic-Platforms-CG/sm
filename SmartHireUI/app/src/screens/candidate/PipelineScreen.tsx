@@ -3,6 +3,7 @@
  */
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router'
 import type { AppDispatch } from '@store/store'
 import type { SortingState } from '@tanstack/react-table'
 import {
@@ -32,9 +33,11 @@ import { FilterPanel } from '@components/forms/FilterPanel'
 import { SearchInput } from '@components/forms/SearchInput'
 import { FileUpload } from '@components/forms/FileUpload'
 import type { CandidateFilter, CandidateStatus } from '@appTypes/candidate'
+import type { Candidate } from '@appTypes/candidate'
 
 const PipelineScreen: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
+  const navigate = useNavigate()
 
   const candidates = useSelector(selectCandidateList)
   const isLoading = useSelector(selectCandidateIsLoading)
@@ -104,9 +107,9 @@ const PipelineScreen: React.FC = () => {
     dispatch(exportCandidates(filter))
   }, [dispatch, filter])
 
-  const handleRowClick = useCallback(() => {
-    // TODO: open candidate detail drawer/modal
-  }, [])
+  const handleRowClick = useCallback((candidate: Candidate) => {
+    navigate(`/candidates/${candidate.id}`)
+  }, [navigate])
 
   return (
     <div className="flex flex-col h-full">

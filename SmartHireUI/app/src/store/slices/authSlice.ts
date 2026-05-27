@@ -4,6 +4,35 @@ import { keycloakService } from '@services/auth/keycloak'
 import { tokenManager } from '@services/auth/tokenManager'
 import { UserRole } from '@services/auth/roleService'
 
+/**
+ * Decode JWT payload synchronously for initial state hydration.
+ * Used only to restore roles on page reload — not for auth decisions.
+ */
+function decodeJwtRoles(token: string | null): UserRole[] {
+  if (!token) return []
+  try {
+    const base64 = token.split('.')[1]
+    if (!base64) return []
+    const payload = JSON.parse(atob(base64.replace(/-/g, '+').replace(/_/g, '/')))
+    return (payload.roles as UserRole[]) || []
+  } catch {
+    return []
+  }
+}
+
+function decodeJwtUser(token: string | null): UserProfile | null {
+  if (!token) return null
+  try {
+    const base64 = token.split('.')[1]
+    if (!base64) return null
+    const payload = JSON.parse(atob(base64.replace(/-/g, '+').replace(/_/g, '/')))
+    const email = (payload.email as string) || (payload.sub as string) || ''
+    return { id: email, email, name: (payload.name as string) || email, roles: (payload.roles as UserRole[]) || [] }
+  } catch {
+    return null
+  }
+}
+
 export interface AuthState {
   user: UserProfile | null
   token: string | null
@@ -13,13 +42,16 @@ export interface AuthState {
   roles: UserRole[]
 }
 
+const _storedToken = tokenManager.getAccessToken()
+const _tokenValid = !!_storedToken && !tokenManager.isTokenExpired()
+
 const initialState: AuthState = {
-  user: null,
-  token: tokenManager.getAccessToken(),
-  isAuthenticated: !!tokenManager.getAccessToken() && !tokenManager.isTokenExpired(),
+  user: _tokenValid ? decodeJwtUser(_storedToken) : null,
+  token: _storedToken,
+  isAuthenticated: _tokenValid,
   isLoading: false,
   error: null,
-  roles: [],
+  roles: _tokenValid ? decodeJwtRoles(_storedToken) : [],
 }
 
 /**

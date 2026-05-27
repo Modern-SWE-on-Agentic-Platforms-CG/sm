@@ -2,7 +2,7 @@
  * WorkflowInfoScreen — approval chain history for a specific candidate
  */
 import React, { useEffect } from 'react'
-import { useSearchParams, useNavigate } from 'react-router'
+import { useParams, useNavigate } from 'react-router'
 import { useWorkflow } from '@hooks/useWorkflow'
 import { ApprovalDecision } from '@appTypes/workflow'
 
@@ -14,9 +14,8 @@ const DECISION_COLORS: Record<ApprovalDecision, string> = {
 }
 
 const WorkflowInfoScreen: React.FC = () => {
-  const [params] = useSearchParams()
+  const { id: candidateId } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const candidateId = params.get('candidateId') ?? ''
   const { history, isLoading, error, loadHistory, handleClearError } = useWorkflow()
 
   useEffect(() => {

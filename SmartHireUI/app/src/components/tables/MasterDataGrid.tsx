@@ -30,7 +30,7 @@ export const MasterDataGrid: React.FC<MasterDataGridProps> = ({
 
   // Derive column keys from first record
   const columns = records.length > 0
-    ? Object.keys(records[0].data)
+    ? Object.keys(records[0].data ?? {})
     : []
 
   return (

@@ -1,0 +1,43 @@
+- generic [ref=e28]:
+  - complementary [ref=e29]:
+    - navigation [ref=e30]:
+      - link "Dashboard" [ref=e31] [cursor=pointer]:
+        - /url: /dashboard
+        - img [ref=e32]
+        - generic [ref=e34]: Dashboard
+      - link "Scheduling" [ref=e35] [cursor=pointer]:
+        - /url: /booking/form
+        - img [ref=e36]
+        - generic [ref=e38]: Scheduling
+      - link "Feedback" [ref=e39] [cursor=pointer]:
+        - /url: /feedback
+        - img [ref=e40]
+        - generic [ref=e42]: Feedback
+      - link "To-Do List" [ref=e43] [cursor=pointer]:
+        - /url: /todo-list
+        - img [ref=e44]
+        - generic [ref=e46]: To-Do List
+  - generic [ref=e47]:
+    - banner [ref=e48]:
+      - generic [ref=e49]:
+        - generic [ref=e50]:
+          - button "Toggle sidebar" [ref=e51]:
+            - img [ref=e52]
+          - heading "SmartHire" [level=1] [ref=e54]
+        - generic [ref=e55]:
+          - generic [ref=e56]:
+            - generic [ref=e57]:
+              - paragraph [ref=e58]: Interviewer
+              - paragraph [ref=e59]: Recruiter
+            - generic [ref=e60]: I
+          - button "Logout" [ref=e61]
+    - main [ref=e62]:
+      - generic [ref=e64]:
+        - heading "Interview Slots" [level=1] [ref=e65]
+        - generic [ref=e66]:
+          - button "Available" [ref=e67]
+          - button "Booked" [ref=e68]
+          - button "Interviewed" [ref=e69]
+          - button "Panel Availability" [ref=e70]
+        - paragraph [ref=e72]: No available slots
+  - region

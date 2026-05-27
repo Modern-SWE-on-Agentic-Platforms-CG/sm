@@ -7,6 +7,21 @@ import type { KeycloakConfig } from '@services/auth/keycloak'
 import { tokenManager } from '@services/auth/tokenManager'
 import type { UserRole } from '@services/auth/roleService'
 
+/**
+ * Decode JWT payload without verification (for client-side role restoration only).
+ * NEVER use this for auth decisions — only for restoring UI state from a validated token.
+ */
+function decodeJwtPayload(token: string): Record<string, unknown> | null {
+  try {
+    const base64 = token.split('.')[1]
+    if (!base64) return null
+    const json = atob(base64.replace(/-/g, '+').replace(/_/g, '/'))
+    return JSON.parse(json)
+  } catch {
+    return null
+  }
+}
+
 export interface UseAuthReturn {
   user: ReturnType<typeof selectUser>
   token: string | null
@@ -31,14 +46,12 @@ export const useAuth = (): UseAuthReturn => {
   const roles = useAppSelector(selectRoles)
 
   /**
-   * Initialize Keycloak on mount
+   * Initialize auth on mount — restores roles from Keycloak profile or JWT payload (mock/dev login)
    */
   useEffect(() => {
     const initAuth = async () => {
-      // Check if token exists and is not expired
       const existingToken = tokenManager.getAccessToken()
       if (existingToken && !tokenManager.isTokenExpired()) {
-        // Token is valid, fetch user profile if available
         const profile = keycloakService.getUserProfile()
         if (profile) {
           dispatch(
@@ -48,6 +61,21 @@ export const useAuth = (): UseAuthReturn => {
               roles: (profile.roles as unknown as UserRole[]) || [],
             })
           )
+        } else {
+          // Fallback: restore roles from JWT payload (mock/dev login)
+          const payload = decodeJwtPayload(existingToken)
+          if (payload) {
+            const jwtRoles = (payload.roles as UserRole[]) || []
+            const email = (payload.email as string) || (payload.sub as string) || ''
+            const name = (payload.name as string) || email
+            dispatch(
+              setAuthState({
+                user: { id: email, email, name, roles: jwtRoles },
+                token: existingToken,
+                roles: jwtRoles,
+              })
+            )
+          }
         }
       }
     }
@@ -74,10 +102,8 @@ export const useAuth = (): UseAuthReturn => {
    */
   const logout = useCallback(async () => {
     try {
-      // Clear auth state and token first so UI updates immediately
       dispatch(clearAuth())
       tokenManager.clear()
-      // Try keycloak logout (ignored if not initialized)
       await dispatch(logoutUser()).unwrap()
     } catch (_error) {
       // Ignore keycloak errors in mock/dev mode

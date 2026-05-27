@@ -63,16 +63,16 @@ const CandidateDetailsScreen: React.FC = () => {
       </div>
 
       {/* Skills & Matching */}
-      <SkillMatchDisplay skillMatch={candidate.skillMatch} />
+      {candidate.skillMatch != null && <SkillMatchDisplay skillMatch={candidate.skillMatch} />}
 
       {/* Documents */}
       <div className="grid grid-cols-2 gap-6">
-        <DocumentDownloadSection documents={candidate.documents} />
+        <DocumentDownloadSection documents={candidate.documents ?? []} />
         <DocumentUploadSection candidateId={candidate.id} />
       </div>
 
       {/* Lifecycle Timeline */}
-      <LifecycleTimeline events={candidate.lifecycleHistory} />
+      <LifecycleTimeline events={candidate.lifecycleHistory ?? []} />
     </div>
   )
 }

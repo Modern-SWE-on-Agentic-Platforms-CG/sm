@@ -1,0 +1,323 @@
+- generic [ref=e5]:
+  - complementary [ref=e6]:
+    - navigation [ref=e7]:
+      - link "Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard
+        - img [ref=e9]
+        - generic [ref=e11]: Dashboard
+      - link "Candidates" [ref=e12] [cursor=pointer]:
+        - /url: /candidates
+        - img [ref=e13]
+        - generic [ref=e15]: Candidates
+      - link "Scheduling" [ref=e16] [cursor=pointer]:
+        - /url: /booking/form
+        - img [ref=e17]
+        - generic [ref=e19]: Scheduling
+      - link "To-Do List" [ref=e20] [cursor=pointer]:
+        - /url: /todo-list
+        - img [ref=e21]
+        - generic [ref=e23]: To-Do List
+  - generic [ref=e24]:
+    - banner [ref=e25]:
+      - generic [ref=e26]:
+        - generic [ref=e27]:
+          - button "Toggle sidebar" [ref=e28]:
+            - img [ref=e29]
+          - heading "SmartHire" [level=1] [ref=e31]
+        - generic [ref=e32]:
+          - generic [ref=e33]:
+            - generic [ref=e34]:
+              - paragraph [ref=e35]: Recruiter
+              - paragraph [ref=e36]: Recruiter
+            - generic [ref=e37]: R
+          - button "Logout" [ref=e38]
+    - main [ref=e39]:
+      - generic [ref=e41]:
+        - generic [ref=e42]:
+          - heading "Candidate Pipeline" [level=1] [ref=e43]
+          - generic [ref=e44]:
+            - button "Upload" [ref=e45]:
+              - img [ref=e46]
+              - text: Upload
+            - button "Export" [ref=e48]:
+              - img [ref=e49]
+              - text: Export
+        - generic [ref=e51]:
+          - generic [ref=e52]:
+            - generic:
+              - img
+            - textbox "Search" [ref=e53]:
+              - /placeholder: Search candidates...
+          - button "Filters" [active] [ref=e54]:
+            - img [ref=e55]
+            - text: Filters
+        - generic [ref=e57]:
+          - generic [ref=e155]:
+            - heading "Filters" [level=3] [ref=e156]
+            - generic [ref=e157]:
+              - paragraph [ref=e158]: Technology
+              - generic [ref=e159]:
+                - generic [ref=e160] [cursor=pointer]:
+                  - checkbox "Java" [ref=e161]
+                  - text: Java
+                - generic [ref=e162] [cursor=pointer]:
+                  - checkbox "Python" [ref=e163]
+                  - text: Python
+                - generic [ref=e164] [cursor=pointer]:
+                  - checkbox "JavaScript" [ref=e165]
+                  - text: JavaScript
+                - generic [ref=e166] [cursor=pointer]:
+                  - checkbox "TypeScript" [ref=e167]
+                  - text: TypeScript
+                - generic [ref=e168] [cursor=pointer]:
+                  - checkbox "React" [ref=e169]
+                  - text: React
+                - generic [ref=e170] [cursor=pointer]:
+                  - checkbox "Angular" [ref=e171]
+                  - text: Angular
+                - generic [ref=e172] [cursor=pointer]:
+                  - checkbox ".NET" [ref=e173]
+                  - text: .NET
+                - generic [ref=e174] [cursor=pointer]:
+                  - checkbox "Node.js" [ref=e175]
+                  - text: Node.js
+                - generic [ref=e176] [cursor=pointer]:
+                  - checkbox "DevOps" [ref=e177]
+                  - text: DevOps
+                - generic [ref=e178] [cursor=pointer]:
+                  - checkbox "Data Engineering" [ref=e179]
+                  - text: Data Engineering
+                - generic [ref=e180] [cursor=pointer]:
+                  - checkbox "QA" [ref=e181]
+                  - text: QA
+                - generic [ref=e182] [cursor=pointer]:
+                  - checkbox "iOS" [ref=e183]
+                  - text: iOS
+                - generic [ref=e184] [cursor=pointer]:
+                  - checkbox "Android" [ref=e185]
+                  - text: Android
+            - generic [ref=e186]:
+              - paragraph [ref=e187]: Business Unit
+              - generic [ref=e188]:
+                - generic [ref=e189] [cursor=pointer]:
+                  - checkbox "EAS" [ref=e190]
+                  - text: EAS
+                - generic [ref=e191] [cursor=pointer]:
+                  - checkbox "Analytics" [ref=e192]
+                  - text: Analytics
+                - generic [ref=e193] [cursor=pointer]:
+                  - checkbox "CG" [ref=e194]
+                  - text: CG
+                - generic [ref=e195] [cursor=pointer]:
+                  - checkbox "Infrastructure" [ref=e196]
+                  - text: Infrastructure
+                - generic [ref=e197] [cursor=pointer]:
+                  - checkbox "Product" [ref=e198]
+                  - text: Product
+                - generic [ref=e199] [cursor=pointer]:
+                  - checkbox "ATS" [ref=e200]
+                  - text: ATS
+            - generic [ref=e201]:
+              - paragraph [ref=e202]: Status
+              - generic [ref=e203]:
+                - generic [ref=e204] [cursor=pointer]:
+                  - checkbox "APPLIED" [ref=e205]
+                  - text: APPLIED
+                - generic [ref=e206] [cursor=pointer]:
+                  - checkbox "SHORTLISTED" [ref=e207]
+                  - text: SHORTLISTED
+                - generic [ref=e208] [cursor=pointer]:
+                  - checkbox "INTERVIEW SCHEDULED" [ref=e209]
+                  - text: INTERVIEW SCHEDULED
+                - generic [ref=e210] [cursor=pointer]:
+                  - checkbox "INTERVIEWED" [ref=e211]
+                  - text: INTERVIEWED
+                - generic [ref=e212] [cursor=pointer]:
+                  - checkbox "SELECTED" [ref=e213]
+                  - text: SELECTED
+                - generic [ref=e214] [cursor=pointer]:
+                  - checkbox "REJECTED" [ref=e215]
+                  - text: REJECTED
+                - generic [ref=e216] [cursor=pointer]:
+                  - checkbox "HOLD" [ref=e217]
+                  - text: HOLD
+                - generic [ref=e218] [cursor=pointer]:
+                  - checkbox "WITHDRAWN" [ref=e219]
+                  - text: WITHDRAWN
+            - generic [ref=e220]:
+              - paragraph [ref=e221]: Source
+              - generic [ref=e222]:
+                - generic [ref=e223] [cursor=pointer]:
+                  - checkbox "REFERRAL" [ref=e224]
+                  - text: REFERRAL
+                - generic [ref=e225] [cursor=pointer]:
+                  - checkbox "NAUKRI" [ref=e226]
+                  - text: NAUKRI
+                - generic [ref=e227] [cursor=pointer]:
+                  - checkbox "LINKEDIN" [ref=e228]
+                  - text: LINKEDIN
+                - generic [ref=e229] [cursor=pointer]:
+                  - checkbox "DIRECT" [ref=e230]
+                  - text: DIRECT
+                - generic [ref=e231] [cursor=pointer]:
+                  - checkbox "CAMPUS" [ref=e232]
+                  - text: CAMPUS
+                - generic [ref=e233] [cursor=pointer]:
+                  - checkbox "CONSULTANT" [ref=e234]
+                  - text: CONSULTANT
+                - generic [ref=e235] [cursor=pointer]:
+                  - checkbox "OTHER" [ref=e236]
+                  - text: OTHER
+            - generic [ref=e237]:
+              - paragraph [ref=e238]: Date Range
+              - generic [ref=e239]:
+                - textbox [ref=e240]:
+                  - /placeholder: From
+                - textbox [ref=e241]:
+                  - /placeholder: To
+            - generic [ref=e242]:
+              - button "Reset" [ref=e243]
+              - button "Apply" [ref=e244]
+          - table [ref=e60]:
+            - rowgroup [ref=e61]:
+              - row "Name Contact Email Technology Exp (yrs) BU Status Aging Last Modified" [ref=e62]:
+                - columnheader "Name" [ref=e63] [cursor=pointer]:
+                  - generic [ref=e64]: Name
+                - columnheader "Contact" [ref=e65] [cursor=pointer]:
+                  - generic [ref=e66]: Contact
+                - columnheader "Email" [ref=e67] [cursor=pointer]:
+                  - generic [ref=e68]: Email
+                - columnheader "Technology" [ref=e69] [cursor=pointer]:
+                  - generic [ref=e70]: Technology
+                - columnheader "Exp (yrs)" [ref=e71] [cursor=pointer]:
+                  - generic [ref=e72]: Exp (yrs)
+                - columnheader "BU" [ref=e73] [cursor=pointer]:
+                  - generic [ref=e74]: BU
+                - columnheader "Status" [ref=e75] [cursor=pointer]:
+                  - generic [ref=e76]: Status
+                - columnheader "Aging" [ref=e77] [cursor=pointer]:
+                  - generic [ref=e78]: Aging
+                - columnheader "Last Modified" [ref=e79] [cursor=pointer]:
+                  - generic [ref=e80]: Last Modified
+            - rowgroup [ref=e81]:
+              - row "Alice Johnson 9876543210 alice@demo.com 5y SHORTLISTED - 5/26/2026" [ref=e82] [cursor=pointer]:
+                - cell "Alice Johnson" [ref=e83]
+                - cell "9876543210" [ref=e84]
+                - cell "alice@demo.com" [ref=e85]:
+                  - generic [ref=e245]: alice@demo.com
+                - cell [ref=e87]
+                - cell "5y" [ref=e88]
+                - cell [ref=e89]
+                - cell "SHORTLISTED" [ref=e90]:
+                  - combobox [ref=e246]:
+                    - option "APPLIED"
+                    - option "SHORTLISTED" [selected]
+                    - option "INTERVIEW SCHEDULED"
+                    - option "INTERVIEWED"
+                    - option "SELECTED"
+                    - option "REJECTED"
+                    - option "HOLD"
+                    - option "WITHDRAWN"
+                - cell "-" [ref=e92]
+                - cell "5/26/2026" [ref=e93]
+              - row "Bob Smith 9876543211 bob@demo.com 3y APPLIED - 5/26/2026" [ref=e94] [cursor=pointer]:
+                - cell "Bob Smith" [ref=e95]
+                - cell "9876543211" [ref=e96]
+                - cell "bob@demo.com" [ref=e97]:
+                  - generic [ref=e247]: bob@demo.com
+                - cell [ref=e99]
+                - cell "3y" [ref=e100]
+                - cell [ref=e101]
+                - cell "APPLIED" [ref=e102]:
+                  - combobox [ref=e248]:
+                    - option "APPLIED" [selected]
+                    - option "SHORTLISTED"
+                    - option "INTERVIEW SCHEDULED"
+                    - option "INTERVIEWED"
+                    - option "SELECTED"
+                    - option "REJECTED"
+                    - option "HOLD"
+                    - option "WITHDRAWN"
+                - cell "-" [ref=e104]
+                - cell "5/26/2026" [ref=e105]
+              - row "Carol Patel 9876543212 carol@demo.com 7y APPLIED - 5/26/2026" [ref=e106] [cursor=pointer]:
+                - cell "Carol Patel" [ref=e107]
+                - cell "9876543212" [ref=e108]
+                - cell "carol@demo.com" [ref=e109]:
+                  - generic [ref=e249]: carol@demo.com
+                - cell [ref=e111]
+                - cell "7y" [ref=e112]
+                - cell [ref=e113]
+                - cell "APPLIED" [ref=e114]:
+                  - combobox [ref=e250]:
+                    - option "APPLIED" [selected]
+                    - option "SHORTLISTED"
+                    - option "INTERVIEW SCHEDULED"
+                    - option "INTERVIEWED"
+                    - option "SELECTED"
+                    - option "REJECTED"
+                    - option "HOLD"
+                    - option "WITHDRAWN"
+                - cell "-" [ref=e116]
+                - cell "5/26/2026" [ref=e117]
+              - row "David Kumar 9876543213 david@demo.com 4y APPLIED - 5/26/2026" [ref=e118] [cursor=pointer]:
+                - cell "David Kumar" [ref=e119]
+                - cell "9876543213" [ref=e120]
+                - cell "david@demo.com" [ref=e121]:
+                  - generic [ref=e251]: david@demo.com
+                - cell [ref=e123]
+                - cell "4y" [ref=e124]
+                - cell [ref=e125]
+                - cell "APPLIED" [ref=e126]:
+                  - combobox [ref=e252]:
+                    - option "APPLIED" [selected]
+                    - option "SHORTLISTED"
+                    - option "INTERVIEW SCHEDULED"
+                    - option "INTERVIEWED"
+                    - option "SELECTED"
+                    - option "REJECTED"
+                    - option "HOLD"
+                    - option "WITHDRAWN"
+                - cell "-" [ref=e128]
+                - cell "5/26/2026" [ref=e129]
+              - row "Eva Singh 9876543214 eva@demo.com 6y APPLIED - 5/26/2026" [ref=e130] [cursor=pointer]:
+                - cell "Eva Singh" [ref=e131]
+                - cell "9876543214" [ref=e132]
+                - cell "eva@demo.com" [ref=e133]:
+                  - generic [ref=e253]: eva@demo.com
+                - cell [ref=e135]
+                - cell "6y" [ref=e136]
+                - cell [ref=e137]
+                - cell "APPLIED" [ref=e138]:
+                  - combobox [ref=e254]:
+                    - option "APPLIED" [selected]
+                    - option "SHORTLISTED"
+                    - option "INTERVIEW SCHEDULED"
+                    - option "INTERVIEWED"
+                    - option "SELECTED"
+                    - option "REJECTED"
+                    - option "HOLD"
+                    - option "WITHDRAWN"
+                - cell "-" [ref=e140]
+                - cell "5/26/2026" [ref=e141]
+              - row "Frank Wilson 9999888877 frank.wilson@example.com 6y APPLIED - 5/27/2026" [ref=e142] [cursor=pointer]:
+                - cell "Frank Wilson" [ref=e143]
+                - cell "9999888877" [ref=e144]
+                - cell "frank.wilson@example.com" [ref=e145]:
+                  - generic [ref=e255]: frank.wilson@example.com
+                - cell [ref=e147]
+                - cell "6y" [ref=e148]
+                - cell [ref=e149]
+                - cell "APPLIED" [ref=e150]:
+                  - combobox [ref=e256]:
+                    - option "APPLIED" [selected]
+                    - option "SHORTLISTED"
+                    - option "INTERVIEW SCHEDULED"
+                    - option "INTERVIEWED"
+                    - option "SELECTED"
+                    - option "REJECTED"
+                    - option "HOLD"
+                    - option "WITHDRAWN"
+                - cell "-" [ref=e152]
+                - cell "5/27/2026" [ref=e153]
+  - region
