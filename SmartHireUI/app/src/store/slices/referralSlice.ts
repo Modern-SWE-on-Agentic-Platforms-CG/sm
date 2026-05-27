@@ -108,8 +108,8 @@ const referralSlice = createSlice({
     builder.addCase(fetchMyCandidates.pending, (state) => { state.isLoading = true; state.error = null })
     builder.addCase(fetchMyCandidates.fulfilled, (state, action) => {
       state.isLoading = false
-      state.myCandidates = action.payload.items
-      state.total = action.payload.total
+      state.myCandidates = action.payload?.items ?? []
+      state.total = action.payload?.total ?? 0
     })
     builder.addCase(fetchMyCandidates.rejected, (state, action) => {
       state.isLoading = false
@@ -120,8 +120,8 @@ const referralSlice = createSlice({
     builder.addCase(fetchAllReferrals.pending, (state) => { state.isLoading = true; state.error = null })
     builder.addCase(fetchAllReferrals.fulfilled, (state, action) => {
       state.isLoading = false
-      state.allCandidates = action.payload.items
-      state.total = action.payload.total
+      state.allCandidates = action.payload?.items ?? []
+      state.total = action.payload?.total ?? 0
     })
     builder.addCase(fetchAllReferrals.rejected, (state, action) => {
       state.isLoading = false

@@ -15,7 +15,10 @@ const BU_COLORS = [
 ]
 
 export const ReferralAnalyticsPanel: React.FC<ReferralAnalyticsProps> = ({ analytics }) => {
-  const total = analytics.totalReferrals || 1
+  const totalReferrals = analytics.totalReferrals ?? 0
+  const totalConverted = analytics.totalConverted ?? 0
+  const byBU = analytics.byBU ?? []
+  const total = totalReferrals || 1
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -23,7 +26,7 @@ export const ReferralAnalyticsPanel: React.FC<ReferralAnalyticsProps> = ({ analy
       <div className="bg-white rounded-xl border border-gray-200 p-5">
         <h3 className="text-sm font-semibold text-gray-700 mb-4">Referrals by BU</h3>
         <div className="space-y-3">
-          {analytics.byBU.map((item, i) => (
+          {byBU.map((item, i) => (
             <div key={item.bu}>
               <div className="flex justify-between text-xs text-gray-600 mb-1">
                 <span>{item.bu}</span>
@@ -37,7 +40,7 @@ export const ReferralAnalyticsPanel: React.FC<ReferralAnalyticsProps> = ({ analy
               </div>
             </div>
           ))}
-          {analytics.byBU.length === 0 && (
+          {byBU.length === 0 && (
             <p className="text-xs text-gray-400">No data available</p>
           )}
         </div>
@@ -47,7 +50,7 @@ export const ReferralAnalyticsPanel: React.FC<ReferralAnalyticsProps> = ({ analy
       <div className="bg-white rounded-xl border border-gray-200 p-5">
         <h3 className="text-sm font-semibold text-gray-700 mb-4">Conversion Rate by BU</h3>
         <div className="space-y-3">
-          {analytics.byBU.map((item, i) => (
+          {byBU.map((item, i) => (
             <div key={item.bu}>
               <div className="flex justify-between text-xs text-gray-600 mb-1">
                 <span>{item.bu}</span>
@@ -61,7 +64,7 @@ export const ReferralAnalyticsPanel: React.FC<ReferralAnalyticsProps> = ({ analy
               </div>
             </div>
           ))}
-          {analytics.byBU.length === 0 && (
+          {byBU.length === 0 && (
             <p className="text-xs text-gray-400">No data available</p>
           )}
         </div>
@@ -70,17 +73,17 @@ export const ReferralAnalyticsPanel: React.FC<ReferralAnalyticsProps> = ({ analy
       {/* Summary cards */}
       <div className="md:col-span-2 grid grid-cols-3 gap-4">
         <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-center">
-          <p className="text-2xl font-bold text-blue-700">{analytics.totalReferrals}</p>
+          <p className="text-2xl font-bold text-blue-700">{totalReferrals}</p>
           <p className="text-xs text-blue-600 mt-1">Total Referrals</p>
         </div>
         <div className="bg-green-50 border border-green-100 rounded-xl p-4 text-center">
-          <p className="text-2xl font-bold text-green-700">{analytics.totalConverted}</p>
+          <p className="text-2xl font-bold text-green-700">{totalConverted}</p>
           <p className="text-xs text-green-600 mt-1">Converted</p>
         </div>
         <div className="bg-purple-50 border border-purple-100 rounded-xl p-4 text-center">
           <p className="text-2xl font-bold text-purple-700">
-            {analytics.totalReferrals > 0
-              ? ((analytics.totalConverted / analytics.totalReferrals) * 100).toFixed(1)
+            {totalReferrals > 0
+              ? ((totalConverted / totalReferrals) * 100).toFixed(1)
               : '0.0'}%
           </p>
           <p className="text-xs text-purple-600 mt-1">Overall Conversion</p>
