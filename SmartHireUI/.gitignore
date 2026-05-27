@@ -1,0 +1,52 @@
+node_modules/
+dist/
+build/
+coverage/
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.env*
+*.log
+alembic/versions/__pycache__/
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+.idea/
+
+# React/Vite/TypeScript specific
+out/
+.next/
+*.pnp
+pnp.js
+.eslintcache
+.prettierignore
+
+# Testing
+.nyc_output/
+*.lcov
+test-results/
+playwright-report/
+.vitest/
+
+# IDE
+*.suo
+*.user
+*.iml
+*.iws
+*.ipr
+
+# OS
+.env.local
+.env.*.local
+yarn-error.log
+npm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml

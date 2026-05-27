@@ -1,0 +1,2209 @@
+openapi: "3.1.0"
+info:
+  title: SmartHire Backend API
+  description: |
+    Internal recruitment management platform API.
+    All endpoints require a valid JWT bearer token except `/prescreen/**`, `/health`, `/docs`, and `/openapi.json`.
+  version: "1.0.0"
+  contact:
+    name: SmartHire Platform Team
+
+servers:
+  - url: "http://localhost:8083"
+    description: Local development
+  - url: "https://smarthire.internal"
+    description: Production
+
+security:
+  - BearerAuth: []
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    ResponseDto:
+      type: object
+      properties:
+        response:
+          type: array
+          items: {}
+        message:
+          type: string
+        exception:
+          type: string
+          nullable: true
+        result:
+          type: string
+          nullable: true
+      required:
+        - response
+        - message
+
+    ErrorResponse:
+      allOf:
+        - $ref: "#/components/schemas/ResponseDto"
+        - type: object
+          properties:
+            exception:
+              type: string
+
+    # -------------------------------------------------------------------------
+    # Auth
+    # -------------------------------------------------------------------------
+    ValidateSessionRequest:
+      type: object
+      required: [userName]
+      properties:
+        userName:
+          type: string
+          example: "jdoe@example.com"
+
+    # -------------------------------------------------------------------------
+    # Candidate
+    # -------------------------------------------------------------------------
+    CandidateDataRequest:
+      type: object
+      required: [candidateName]
+      properties:
+        candidateName:
+          type: string
+        emailId:
+          type: string
+          format: email
+        mobileNumber:
+          type: string
+        currentCompany:
+          type: string
+        currentLocation:
+          type: string
+        totalExp:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 60
+        relevantExp:
+          type: number
+          format: float
+        currentCtc:
+          type: number
+          format: double
+        noticePeriod:
+          type: string
+        accountId:
+          type: integer
+          format: int64
+        region:
+          type: string
+        recvdDate:
+          type: string
+          format: date
+        isReferral:
+          type: boolean
+          default: false
+        referrerName:
+          type: string
+        isRehire:
+          type: boolean
+          default: false
+        prescreenId:
+          type: string
+        technologyId:
+          type: integer
+          format: int64
+        towerId:
+          type: integer
+          format: int64
+        practiceId:
+          type: integer
+          format: int64
+
+    CandidateSearchRequest:
+      type: object
+      properties:
+        skill:
+          type: integer
+          format: int64
+          description: technology_master id
+        status:
+          type: integer
+          format: int64
+          description: status_master id
+        tower:
+          type: integer
+          format: int64
+        source:
+          type: integer
+          format: int64
+        fromDate:
+          type: string
+          format: date
+        toDate:
+          type: string
+          format: date
+        page:
+          type: integer
+          default: 0
+        size:
+          type: integer
+          default: 20
+          maximum: 200
+
+    SkillDLRequest:
+      type: object
+      required: [technologyId, dlEmail]
+      properties:
+        technologyId:
+          type: integer
+          format: int64
+        dlEmail:
+          type: string
+          format: email
+
+    # -------------------------------------------------------------------------
+    # Interviewer Calendar
+    # -------------------------------------------------------------------------
+    FreeSlotRequest:
+      type: object
+      required: [interviewerId, interviewDate, startTime, interviewTypeId, technologyId]
+      properties:
+        interviewerId:
+          type: integer
+          format: int64
+        interviewDate:
+          type: string
+          format: date
+        startTime:
+          type: string
+          example: "10:00"
+        interviewTypeId:
+          type: integer
+          format: int64
+        technologyId:
+          type: integer
+          format: int64
+        accountId:
+          type: integer
+          format: int64
+        buId:
+          type: integer
+          format: int64
+        participationType:
+          type: string
+          enum: [Virtual, In-person]
+
+    InterviewSlotRequest:
+      type: object
+      required: [interviewerCalendarId, candidateId, recruiterId]
+      properties:
+        interviewerCalendarId:
+          type: integer
+          format: int64
+        candidateId:
+          type: integer
+          format: int64
+        recruiterId:
+          type: integer
+          format: int64
+        interviewTypeId:
+          type: integer
+          format: int64
+
+    FeedbackRequest:
+      type: object
+      required: [interviewerCalendarId, feedbackStatus, responseJson]
+      properties:
+        interviewerCalendarId:
+          type: integer
+          format: int64
+        feedbackStatus:
+          type: string
+          enum: [Select, Reject, "On Hold", "L1 FB NA", "L2 FB NA", "L3 FB NA"]
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+        responseJson:
+          type: object
+          additionalProperties: true
+
+    RescheduleRequest:
+      type: object
+      required: [interviewerCalendarId, newDate, newStartTime]
+      properties:
+        interviewerCalendarId:
+          type: integer
+          format: int64
+        newDate:
+          type: string
+          format: date
+        newStartTime:
+          type: string
+          example: "14:00"
+
+    # -------------------------------------------------------------------------
+    # Feedback Form
+    # -------------------------------------------------------------------------
+    FeedbackFormCreateRequest:
+      type: object
+      required: [templateName, technologyId, nodes]
+      properties:
+        templateName:
+          type: string
+        technologyId:
+          type: integer
+          format: int64
+        practiceId:
+          type: integer
+          format: int64
+        nodes:
+          type: array
+          items:
+            $ref: "#/components/schemas/FeedbackFormNode"
+
+    FeedbackFormNode:
+      type: object
+      required: [heading]
+      properties:
+        heading:
+          type: string
+        parentId:
+          type: integer
+          format: int64
+          nullable: true
+        dataTypeId:
+          type: integer
+          format: int64
+        requiredFlag:
+          type: boolean
+          default: false
+        orderIndex:
+          type: integer
+        children:
+          type: array
+          items:
+            $ref: "#/components/schemas/FeedbackFormNode"
+
+    FeedbackFormHeadingsRequest:
+      type: object
+      required: [technologyId]
+      properties:
+        technologyId:
+          type: integer
+          format: int64
+        practiceId:
+          type: integer
+          format: int64
+
+    # -------------------------------------------------------------------------
+    # User / Employee
+    # -------------------------------------------------------------------------
+    RegisterUserRequest:
+      type: object
+      required: [employeeId, firstName, emailId, gradeId, buId, roleIds]
+      properties:
+        employeeId:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        emailId:
+          type: string
+          format: email
+        gradeId:
+          type: integer
+          format: int64
+        buId:
+          type: integer
+          format: int64
+        practiceId:
+          type: integer
+          format: int64
+        supervisorEmail:
+          type: string
+          format: email
+        roleIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        technologyIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        accountIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+
+    UpdateRoleRequest:
+      type: object
+      required: [emailId, roleIds]
+      properties:
+        emailId:
+          type: string
+          format: email
+        roleIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+
+    # -------------------------------------------------------------------------
+    # Lookup
+    # -------------------------------------------------------------------------
+    LookupRequest:
+      type: object
+      properties:
+        screenId:
+          type: string
+
+    MarketUnitRequest:
+      type: object
+      required: [buId]
+      properties:
+        buId:
+          type: integer
+          format: int64
+
+    # -------------------------------------------------------------------------
+    # Reports
+    # -------------------------------------------------------------------------
+    ReportFilterRequest:
+      type: object
+      properties:
+        fromDate:
+          type: string
+          format: date
+        toDate:
+          type: string
+          format: date
+        technologyId:
+          type: integer
+          format: int64
+        buId:
+          type: integer
+          format: int64
+        accountId:
+          type: integer
+          format: int64
+        interviewTypeId:
+          type: integer
+          format: int64
+
+    # -------------------------------------------------------------------------
+    # Prescreen
+    # -------------------------------------------------------------------------
+    # No request body — query params only
+
+    # -------------------------------------------------------------------------
+    # Teams Meeting
+    # -------------------------------------------------------------------------
+    MeetingLinkRequest:
+      type: object
+      required: [code]
+      properties:
+        code:
+          type: string
+          description: OAuth2 authorization code from /getCode redirect
+
+    MeetingInviteRequest:
+      type: object
+      required: [candidateId, interviewerCalendarId]
+      properties:
+        candidateId:
+          type: integer
+          format: int64
+        interviewerCalendarId:
+          type: integer
+          format: int64
+        subject:
+          type: string
+        attendeeEmails:
+          type: array
+          items:
+            type: string
+            format: email
+
+    # -------------------------------------------------------------------------
+    # Keycloak
+    # -------------------------------------------------------------------------
+    KeycloakTokenRequest:
+      type: object
+      required: [token]
+      properties:
+        token:
+          type: string
+        userId:
+          type: string
+
+paths:
+  # ===========================================================================
+  # Health (public)
+  # ===========================================================================
+  /health:
+    get:
+      tags: [Health]
+      summary: Health check
+      security: []
+      responses:
+        "200":
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # Auth / Session
+  # ===========================================================================
+  /login/validateSession:
+    post:
+      tags: [Auth]
+      summary: Validate Keycloak session and enforce single-session policy
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ValidateSessionRequest"
+      responses:
+        "200":
+          description: Session validated or duplicate sessions terminated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # Prescreen (PUBLIC — no auth)
+  # ===========================================================================
+  /prescreen/updatePrescreenDetails:
+    get:
+      tags: [Prescreen]
+      summary: Update prescreen record (public endpoint for external systems)
+      security: []
+      parameters:
+        - name: prescreenId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: recruiterEmailId
+          in: query
+          required: true
+          schema:
+            type: string
+            format: email
+        - name: recruiterName
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Prescreen record updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # Candidate Data
+  # ===========================================================================
+  /candidateData/saveCandidateData:
+    post:
+      tags: [Candidate]
+      summary: Create or update a candidate profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CandidateDataRequest"
+      responses:
+        "200":
+          description: Candidate saved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /candidateData/getCandidateData:
+    post:
+      tags: [Candidate]
+      summary: Search and filter candidates with pagination
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CandidateSearchRequest"
+      responses:
+        "200":
+          description: Paginated candidate list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /candidateData/saveSkillDL:
+    post:
+      tags: [Candidate]
+      summary: Map a skill/technology to a distribution list email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SkillDLRequest"
+      responses:
+        "200":
+          description: Mapping saved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /candidateData/createNewEntry:
+    post:
+      tags: [Candidate]
+      summary: Create a candidate entry with a new skill not previously in the system
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CandidateDataRequest"
+      responses:
+        "200":
+          description: Entry created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # Interviewer
+  # ===========================================================================
+  /interviewer/getInterviewerSlots:
+    post:
+      tags: [Interviewer]
+      summary: Retrieve available interviewer slots by skill, date range, and BU
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                technologyId:
+                  type: integer
+                  format: int64
+                fromDate:
+                  type: string
+                  format: date
+                toDate:
+                  type: string
+                  format: date
+                buId:
+                  type: integer
+                  format: int64
+      responses:
+        "200":
+          description: Available interviewer slots
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /interviewer/saveFreeSlot:
+    post:
+      tags: [Interviewer]
+      summary: Register an interviewer's availability slot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FreeSlotRequest"
+      responses:
+        "200":
+          description: Free slot saved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /interviewer/saveInterviewSlot:
+    post:
+      tags: [Interviewer]
+      summary: Book an interview slot (link candidate to interviewer slot)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InterviewSlotRequest"
+      responses:
+        "200":
+          description: Slot booked
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /interviewer/saveFeedback:
+    post:
+      tags: [Interviewer]
+      summary: Submit interview feedback
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FeedbackRequest"
+      responses:
+        "200":
+          description: Feedback saved; PDF generation triggered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /interviewer/rescheduledRequest:
+    post:
+      tags: [Interviewer]
+      summary: Reschedule an interview slot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RescheduleRequest"
+      responses:
+        "200":
+          description: Slot rescheduled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /interviewer/deleteSlot:
+    delete:
+      tags: [Interviewer]
+      summary: Cancel / delete an interview slot
+      parameters:
+        - name: interviewerCalendarId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Slot deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # Recruiter
+  # ===========================================================================
+  /recruiter/getDirectRecruiterSlots:
+    post:
+      tags: [Recruiter]
+      summary: Retrieve interview slots for a recruiter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recruiterEmail:
+                  type: string
+                  format: email
+                month:
+                  type: integer
+                year:
+                  type: integer
+      responses:
+        "200":
+          description: Recruiter slots
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /recruiter/saveInterviewSlot:
+    post:
+      tags: [Recruiter]
+      summary: Book a direct interview slot (without prior availability slot)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InterviewSlotRequest"
+      responses:
+        "200":
+          description: Slot booked
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /recruiter/rescheduleSlot:
+    post:
+      tags: [Recruiter]
+      summary: Reschedule a recruiter-created interview slot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RescheduleRequest"
+      responses:
+        "200":
+          description: Slot rescheduled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /recruiter/deleteSlot:
+    post:
+      tags: [Recruiter]
+      summary: Delete a recruiter-created interview slot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [recruiterCalendarId]
+              properties:
+                recruiterCalendarId:
+                  type: integer
+                  format: int64
+      responses:
+        "200":
+          description: Slot deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /recruiter/feedbackForm:
+    post:
+      tags: [Recruiter]
+      summary: Retrieve feedback form for a specific interview slot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [interviewerCalendarId]
+              properties:
+                interviewerCalendarId:
+                  type: integer
+                  format: int64
+      responses:
+        "200":
+          description: Feedback form data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /recruiter/feedbackFormPDF:
+    post:
+      tags: [Recruiter]
+      summary: Generate or retrieve the PDF feedback report for an interview
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [interviewerCalendarId]
+              properties:
+                interviewerCalendarId:
+                  type: integer
+                  format: int64
+      responses:
+        "200":
+          description: PDF URL or file stream
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # Slot Bulk Upload
+  # ===========================================================================
+  /slot/panelSlotUpload:
+    post:
+      tags: [Slot]
+      summary: Bulk upload interviewer panel slots via Excel file
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file, createdBy]
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Excel (.xlsx) file with slot data
+                createdBy:
+                  type: string
+                  format: email
+      responses:
+        "200":
+          description: Upload result with row-level error details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # Feedback Forms
+  # ===========================================================================
+  /feedbackForm/addFeedbackForm:
+    post:
+      tags: [FeedbackForm]
+      summary: Create or update a feedback form template
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FeedbackFormCreateRequest"
+      responses:
+        "200":
+          description: Template saved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /feedbackForm/getFeedbackFormHeadings:
+    post:
+      tags: [FeedbackForm]
+      summary: Retrieve active hierarchical feedback form for a technology and practice
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FeedbackFormHeadingsRequest"
+      responses:
+        "200":
+          description: Feedback form hierarchy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # Reports
+  # ===========================================================================
+  /report/generateReport:
+    put:
+      tags: [Reports]
+      summary: Generate an Excel pipeline report with filters
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportFilterRequest"
+      responses:
+        "200":
+          description: Excel file stream
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+
+  /report/generatePdf:
+    get:
+      tags: [Reports]
+      summary: Generate PDF feedback report for a specific interview
+      parameters:
+        - name: interviewerCalendarId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: PDF file stream or S3 URL
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # Excel Downloads
+  # ===========================================================================
+  /downloadExcel/exportExcel:
+    post:
+      tags: [Reports]
+      summary: Download main candidate pipeline Excel report
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportFilterRequest"
+      responses:
+        "200":
+          description: Excel file
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+
+  /downloadExcel/exportExcelPMO:
+    post:
+      tags: [Reports]
+      summary: Download PMO demand report
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportFilterRequest"
+      responses:
+        "200":
+          description: PMO Excel file
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+
+  /downloadExcel/exportExcelL2AgingReport:
+    post:
+      tags: [Reports]
+      summary: Download L2 aging report
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportFilterRequest"
+      responses:
+        "200":
+          description: L2 aging Excel file
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+
+  # ===========================================================================
+  # Lookup / Master Data
+  # ===========================================================================
+  /lookup/fetchDropdown:
+    post:
+      tags: [Lookup]
+      summary: Fetch dropdown values for a given screen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LookupRequest"
+      responses:
+        "200":
+          description: Dropdown items
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /lookup/fetchMarketUnit:
+    post:
+      tags: [Lookup]
+      summary: Fetch market units for a BU
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MarketUnitRequest"
+      responses:
+        "200":
+          description: Market units
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /lookup/fetchPractices:
+    post:
+      tags: [Lookup]
+      summary: Fetch practices
+      responses:
+        "200":
+          description: Practice list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /lookup/skills:
+    get:
+      tags: [Lookup]
+      summary: Fetch all active technologies / skills
+      responses:
+        "200":
+          description: Skills list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /lookup/grade:
+    get:
+      tags: [Lookup]
+      summary: Fetch all grades
+      responses:
+        "200":
+          description: Grade list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /lookup/locations:
+    get:
+      tags: [Lookup]
+      summary: Fetch all locations
+      responses:
+        "200":
+          description: Location list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /lookup/roles:
+    get:
+      tags: [Lookup]
+      summary: Fetch all application roles
+      responses:
+        "200":
+          description: Role list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /lookup/getRejectionReasons:
+    get:
+      tags: [Lookup]
+      summary: Fetch rejection reason master data
+      responses:
+        "200":
+          description: Rejection reasons
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /lookup/getDeclineReasons:
+    get:
+      tags: [Lookup]
+      summary: Fetch offer decline reason master data
+      responses:
+        "200":
+          description: Decline reasons
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /configuration/constants:
+    get:
+      tags: [Configuration]
+      summary: Fetch runtime configuration constants
+      responses:
+        "200":
+          description: Configuration values (slotDuration, fromTime, toTime, locale)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # User Registration & Role Management
+  # ===========================================================================
+  /register/registerNewUser:
+    post:
+      tags: [UserManagement]
+      summary: Register a new employee with roles and skills
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterUserRequest"
+      responses:
+        "200":
+          description: User registered; welcome email sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /register/updateUserDetails:
+    post:
+      tags: [UserManagement]
+      summary: Update an existing employee's details
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterUserRequest"
+      responses:
+        "200":
+          description: User updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /register/removeSkill:
+    post:
+      tags: [UserManagement]
+      summary: Remove a skill assignment from an employee
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [emailId, technologyId]
+              properties:
+                emailId:
+                  type: string
+                  format: email
+                technologyId:
+                  type: integer
+                  format: int64
+      responses:
+        "200":
+          description: Skill removed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /role/getRole:
+    post:
+      tags: [UserManagement]
+      summary: Get roles assigned to an employee by email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [emailId]
+              properties:
+                emailId:
+                  type: string
+                  format: email
+      responses:
+        "200":
+          description: Employee roles
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /users/getUsers:
+    post:
+      tags: [UserManagement]
+      summary: List all users (optionally filtered)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                buId:
+                  type: integer
+                  format: int64
+      responses:
+        "200":
+          description: User list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /users/updateAssignedRole:
+    post:
+      tags: [UserManagement]
+      summary: Update role assignments for an employee
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateRoleRequest"
+      responses:
+        "200":
+          description: Roles updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # Keycloak Integration
+  # ===========================================================================
+  /keycloak/fetchAllKeycloakUsers:
+    post:
+      tags: [Keycloak]
+      summary: Fetch all users from the Keycloak realm
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KeycloakTokenRequest"
+      responses:
+        "200":
+          description: Keycloak user list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /keycloak/deleteEmployee:
+    delete:
+      tags: [Keycloak]
+      summary: Delete an employee from local DB and Keycloak
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Employee deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /keycloak/updateEmployee:
+    put:
+      tags: [Keycloak]
+      summary: Push employee updates to Keycloak
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KeycloakTokenRequest"
+      responses:
+        "200":
+          description: Employee updated in Keycloak
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # Teams Meeting
+  # ===========================================================================
+  /getCode:
+    get:
+      tags: [Teams]
+      summary: Initiate Microsoft OAuth2 authorization code flow
+      responses:
+        "302":
+          description: Redirect to Microsoft login
+        "200":
+          description: Authorization code returned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /getMeetingLink:
+    post:
+      tags: [Teams]
+      summary: Exchange auth code for access token and create Teams meeting
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MeetingLinkRequest"
+      responses:
+        "200":
+          description: Teams meeting join URL
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /sendMeetingInvite:
+    post:
+      tags: [Teams]
+      summary: Create Teams meeting and send invite to attendees
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MeetingInviteRequest"
+      responses:
+        "200":
+          description: Meeting invite sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # Alerts
+  # ===========================================================================
+  /alerts/sendAgingSLAs:
+    get:
+      tags: [Alerts]
+      summary: Manually trigger aging SLA alert emails to skill group DLs
+      responses:
+        "200":
+          description: Alert dispatched
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /alerts/sendInterviewReminder:
+    get:
+      tags: [Alerts]
+      summary: Manually trigger interview reminder notifications
+      responses:
+        "200":
+          description: Reminders sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /alerts/sendInterviewStatus:
+    get:
+      tags: [Alerts]
+      summary: Manually trigger interview status update notifications to recruiters
+      responses:
+        "200":
+          description: Status notifications sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /alerts/feedbackFormReminder:
+    get:
+      tags: [Alerts]
+      summary: Manually trigger feedback form reminder emails to interviewers
+      responses:
+        "200":
+          description: Reminders sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /alerts/sendTowerAgingSLAs:
+    get:
+      tags: [Alerts]
+      summary: Manually trigger tower-level aging SLA reports
+      responses:
+        "200":
+          description: Tower reports sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # File Management
+  # ===========================================================================
+  /image/getCandidateImage:
+    get:
+      tags: [Files]
+      summary: Retrieve candidate profile image (pre-signed S3 URL)
+      parameters:
+        - name: candidateId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Image URL
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /image/uploadProfileImage:
+    post:
+      tags: [Files]
+      summary: Upload candidate profile image to S3
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file, candidateId]
+              properties:
+                file:
+                  type: string
+                  format: binary
+                candidateId:
+                  type: integer
+                  format: int64
+      responses:
+        "200":
+          description: Image uploaded; S3 key returned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /msg/getMSGAttachment:
+    get:
+      tags: [Files]
+      summary: Download an Outlook .msg attachment (pre-signed S3 URL)
+      parameters:
+        - name: candidateId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: MSG file URL
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /pdfDownload/uploadUserManual:
+    post:
+      tags: [Files]
+      summary: Upload or update the platform user manual PDF to S3
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Manual uploaded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # Referral Candidate
+  # ===========================================================================
+  /referralCandidate/getReferralFormHeaders:
+    get:
+      tags: [Referral]
+      summary: Fetch all master data for referral form rendering
+      responses:
+        "200":
+          description: Form master data (technologies, locations, BU, notice periods, certifications)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /referralCandidate/submitReferral:
+    post:
+      tags: [Referral]
+      summary: Submit an employee referral
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [referrerEmployeeId, candidateName, emailId]
+              properties:
+                referrerEmployeeId:
+                  type: string
+                candidateName:
+                  type: string
+                emailId:
+                  type: string
+                  format: email
+                mobileNumber:
+                  type: string
+                totalExp:
+                  type: number
+                  format: float
+                currentCtc:
+                  type: number
+                  format: double
+                noticePeriod:
+                  type: string
+                buId:
+                  type: integer
+                  format: int64
+                technologyIds:
+                  type: array
+                  items:
+                    type: integer
+                    format: int64
+                certificationIds:
+                  type: array
+                  items:
+                    type: integer
+                    format: int64
+      responses:
+        "200":
+          description: Referral submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /referralCandidate/bulkUpload:
+    post:
+      tags: [Referral]
+      summary: Bulk upload referral candidates via Excel
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Upload result with row-level errors
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # Supply Screen
+  # ===========================================================================
+  /supplyScreen/getSupplyInfo:
+    post:
+      tags: [Supply]
+      summary: Get recruitment supply matrix by skill and status
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fromDate:
+                  type: string
+                  format: date
+                toDate:
+                  type: string
+                  format: date
+                technologyId:
+                  type: integer
+                  format: int64
+      responses:
+        "200":
+          description: Supply matrix data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # Demand Screen
+  # ===========================================================================
+  /demandScreen/getDemandInfo:
+    post:
+      tags: [Demand]
+      summary: Get hiring demand matrix bucketed by role start date
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                skillGroupId:
+                  type: integer
+                  format: int64
+                technologyId:
+                  type: integer
+                  format: int64
+      responses:
+        "200":
+          description: Demand matrix (pastdue, bill_one/two/three, strategic, pursuit buckets)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /demandUpload/upload:
+    post:
+      tags: [Demand]
+      summary: Bulk upload demand data via Excel
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Upload result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # Bench Screen
+  # ===========================================================================
+  /benchScreen/getBenchInfo:
+    post:
+      tags: [Bench]
+      summary: Get bench employee matrix by skill and aging buckets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                skillGroupId:
+                  type: integer
+                  format: int64
+                technologyId:
+                  type: integer
+                  format: int64
+      responses:
+        "200":
+          description: Bench matrix (6 aging buckets)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /benchUpload/upload:
+    post:
+      tags: [Bench]
+      summary: Bulk upload bench data via Excel
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Upload result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+
+  # ===========================================================================
+  # Calendar / Scheduling (app-specific paths)
+  # ===========================================================================
+  /calendar/addSlot:
+    post:
+      tags: [Scheduling]
+      summary: Add an interviewer availability slot
+      responses:
+        "200":
+          description: Slot added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /calendar/bookSlot:
+    post:
+      tags: [Scheduling]
+      summary: Book a slot for a candidate
+      responses:
+        "200":
+          description: Slot booked
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /calendar/getAvailableSlots/{interviewer_id}:
+    get:
+      tags: [Scheduling]
+      summary: Get available slots for an interviewer
+      parameters:
+        - name: interviewer_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Available slots
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /calendar/rescheduleSlot:
+    post:
+      tags: [Scheduling]
+      summary: Reschedule an existing slot
+      responses:
+        "200":
+          description: Slot rescheduled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # Candidate Data (app-specific variants)
+  # ===========================================================================
+  /candidateData/addCandidateData:
+    post:
+      tags: [Candidate]
+      summary: Add a new candidate
+      responses:
+        "200":
+          description: Candidate added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /candidateData/addComment:
+    post:
+      tags: [Candidate]
+      summary: Add a comment to a candidate profile
+      responses:
+        "200":
+          description: Comment added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /candidateData/changeCandidateStatus:
+    post:
+      tags: [Candidate]
+      summary: Change candidate pipeline status
+      responses:
+        "200":
+          description: Status updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /candidateData/getAttachment/{s3_key}:
+    get:
+      tags: [Candidate]
+      summary: Get a pre-signed URL for a candidate attachment
+      parameters:
+        - name: s3_key
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Pre-signed URL
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /candidateData/getCandidateData/{candidate_id}:
+    get:
+      tags: [Candidate]
+      summary: Get a single candidate by ID
+      parameters:
+        - name: candidate_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Candidate details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /candidateData/getComments/{candidate_id}:
+    get:
+      tags: [Candidate]
+      summary: Get comments for a candidate
+      parameters:
+        - name: candidate_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Comments list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /candidateData/getStatusHistory/{candidate_id}:
+    get:
+      tags: [Candidate]
+      summary: Get status history for a candidate
+      parameters:
+        - name: candidate_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Status history
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /candidateData/searchCandidates:
+    post:
+      tags: [Candidate]
+      summary: Search candidates with filters
+      responses:
+        "200":
+          description: Search results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # Feedback (app-specific paths)
+  # ===========================================================================
+  /feedback/get/{interviewer_calendar_id}:
+    get:
+      tags: [Feedback]
+      summary: Get feedback by interviewer calendar slot
+      parameters:
+        - name: interviewer_calendar_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Feedback data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /feedback/pdf/{interviewer_calendar_id}:
+    get:
+      tags: [Feedback]
+      summary: Download feedback PDF
+      parameters:
+        - name: interviewer_calendar_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: PDF file
+
+  /feedback/submit:
+    post:
+      tags: [Feedback]
+      summary: Submit interview feedback
+      responses:
+        "200":
+          description: Feedback submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /feedback/template:
+    post:
+      tags: [Feedback]
+      summary: Create a feedback template
+      responses:
+        "200":
+          description: Template created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /feedback/templates:
+    get:
+      tags: [Feedback]
+      summary: List all feedback templates
+      responses:
+        "200":
+          description: Templates list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # Keycloak (app-specific paths)
+  # ===========================================================================
+  /keycloak/getUserDetails:
+    post:
+      tags: [Keycloak]
+      summary: Get user details from Keycloak token
+      responses:
+        "200":
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /keycloak/getUserRoles:
+    post:
+      tags: [Keycloak]
+      summary: Get roles assigned to the authenticated user
+      responses:
+        "200":
+          description: User roles
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # Lookup (app-specific generic endpoint)
+  # ===========================================================================
+  /lookup/{entity}:
+    get:
+      tags: [Lookup]
+      summary: Generic lookup by entity name
+      parameters:
+        - name: entity
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Lookup results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # Prescreen / Referral (app-specific paths)
+  # ===========================================================================
+  /prescreen/submit:
+    post:
+      tags: [Prescreen]
+      summary: Submit a pre-screen candidate record
+      responses:
+        "200":
+          description: Prescreen submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /referral/submit:
+    post:
+      tags: [Referral]
+      summary: Submit a referral candidate
+      responses:
+        "200":
+          description: Referral submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # Reports (app-specific paths)
+  # ===========================================================================
+  /reports/candidatePipeline:
+    post:
+      tags: [Reports]
+      summary: Generate candidate pipeline report
+      responses:
+        "200":
+          description: Report data or file
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  # ===========================================================================
+  # User (app-specific paths)
+  # ===========================================================================
+  /user/assignRole:
+    post:
+      tags: [UserManagement]
+      summary: Assign a role to a user
+      responses:
+        "200":
+          description: Role assigned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /user/register:
+    post:
+      tags: [UserManagement]
+      summary: Register a new user
+      responses:
+        "200":
+          description: User registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+
+  /user/{employee_pk}:
+    get:
+      tags: [UserManagement]
+      summary: Get user by primary key
+      parameters:
+        - name: employee_pk
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: User data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+tags:
+  - name: Health
+    description: Health check endpoint
+  - name: Auth
+    description: Session validation
+  - name: Prescreen
+    description: Public prescreen intake (no auth required)
+  - name: Candidate
+    description: Candidate profile management and pipeline
+  - name: Interviewer
+    description: Interviewer slot management and feedback
+  - name: Recruiter
+    description: Recruiter calendar and booking management
+  - name: Slot
+    description: Bulk slot upload
+  - name: FeedbackForm
+    description: Feedback form template management
+  - name: Reports
+    description: Excel and PDF report generation
+  - name: Lookup
+    description: Master data dropdowns and reference data
+  - name: Configuration
+    description: Runtime configuration constants
+  - name: UserManagement
+    description: Employee registration and role management
+  - name: Keycloak
+    description: Keycloak identity provider synchronization
+  - name: Teams
+    description: Microsoft Teams meeting integration
+  - name: Alerts
+    description: SLA and notification alert triggers
+  - name: Files
+    description: File upload and download (S3)
+  - name: Referral
+    description: Employee referral programme
+  - name: Supply
+    description: Recruitment supply screen
+  - name: Demand
+    description: Hiring demand screen
+  - name: Bench
+    description: Bench employee screen

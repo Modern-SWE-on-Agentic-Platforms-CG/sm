@@ -1,0 +1,182 @@
+- generic [ref=e5]:
+  - complementary [ref=e6]:
+    - navigation [ref=e7]:
+      - link "Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard
+        - img [ref=e9]
+        - generic [ref=e11]: Dashboard
+      - link "Candidates" [ref=e12] [cursor=pointer]:
+        - /url: /candidates
+        - img [ref=e13]
+        - generic [ref=e15]: Candidates
+      - link "Scheduling" [ref=e16] [cursor=pointer]:
+        - /url: /booking/form
+        - img [ref=e17]
+        - generic [ref=e19]: Scheduling
+      - link "To-Do List" [ref=e20] [cursor=pointer]:
+        - /url: /todo-list
+        - img [ref=e21]
+        - generic [ref=e23]: To-Do List
+  - generic [ref=e24]:
+    - banner [ref=e25]:
+      - generic [ref=e26]:
+        - generic [ref=e27]:
+          - button "Toggle sidebar" [ref=e28]:
+            - img [ref=e29]
+          - heading "SmartHire" [level=1] [ref=e31]
+        - generic [ref=e32]:
+          - generic [ref=e33]:
+            - generic [ref=e34]:
+              - paragraph [ref=e35]: Recruiter
+              - paragraph [ref=e36]: Recruiter
+            - generic [ref=e37]: R
+          - button "Logout" [ref=e38]
+    - main [ref=e39]:
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - heading "Candidate Pipeline" [level=1] [ref=e49]
+          - generic [ref=e50]:
+            - button "Upload" [ref=e51]:
+              - img [ref=e52]
+              - text: Upload
+            - button "Export" [ref=e54]:
+              - img [ref=e55]
+              - text: Export
+        - generic [ref=e57]:
+          - generic [ref=e58]:
+            - generic:
+              - img
+            - textbox "Search" [ref=e59]:
+              - /placeholder: Search candidates...
+              - text: Alice
+            - button "Clear search" [ref=e148]:
+              - img [ref=e149]
+          - button "Filters" [ref=e60]:
+            - img [ref=e61]
+            - text: Filters
+        - alert [ref=e416]:
+          - generic [ref=e417]: Request failed with status code 422
+          - button "×" [ref=e418]
+        - table [ref=e419]:
+          - rowgroup [ref=e420]:
+            - row "Name Contact Email Technology Exp (yrs) BU Status Aging Last Modified" [ref=e421]:
+              - columnheader "Name" [ref=e422] [cursor=pointer]:
+                - generic [ref=e423]: Name
+              - columnheader "Contact" [ref=e424] [cursor=pointer]:
+                - generic [ref=e425]: Contact
+              - columnheader "Email" [ref=e426] [cursor=pointer]:
+                - generic [ref=e427]: Email
+              - columnheader "Technology" [ref=e428] [cursor=pointer]:
+                - generic [ref=e429]: Technology
+              - columnheader "Exp (yrs)" [ref=e430] [cursor=pointer]:
+                - generic [ref=e431]: Exp (yrs)
+              - columnheader "BU" [ref=e432] [cursor=pointer]:
+                - generic [ref=e433]: BU
+              - columnheader "Status" [ref=e434] [cursor=pointer]:
+                - generic [ref=e435]: Status
+              - columnheader "Aging" [ref=e436] [cursor=pointer]:
+                - generic [ref=e437]: Aging
+              - columnheader "Last Modified" [ref=e438] [cursor=pointer]:
+                - generic [ref=e439]: Last Modified
+          - rowgroup [ref=e440]:
+            - row "Alice Johnson 9876543210 alice@demo.com 5y APPLIED - 5/26/2026" [ref=e441] [cursor=pointer]:
+              - cell "Alice Johnson" [ref=e442]
+              - cell "9876543210" [ref=e443]
+              - cell "alice@demo.com" [ref=e444]:
+                - generic [ref=e445]: alice@demo.com
+              - cell [ref=e446]
+              - cell "5y" [ref=e447]
+              - cell [ref=e448]
+              - cell "APPLIED" [ref=e449]:
+                - combobox [ref=e450]:
+                  - option "APPLIED" [selected]
+                  - option "SHORTLISTED"
+                  - option "INTERVIEW SCHEDULED"
+                  - option "INTERVIEWED"
+                  - option "SELECTED"
+                  - option "REJECTED"
+                  - option "HOLD"
+                  - option "WITHDRAWN"
+              - cell "-" [ref=e451]
+              - cell "5/26/2026" [ref=e452]
+            - row "Bob Smith 9876543211 bob@demo.com 3y SHORTLISTED - 5/26/2026" [ref=e453] [cursor=pointer]:
+              - cell "Bob Smith" [ref=e454]
+              - cell "9876543211" [ref=e455]
+              - cell "bob@demo.com" [ref=e456]:
+                - generic [ref=e457]: bob@demo.com
+              - cell [ref=e458]
+              - cell "3y" [ref=e459]
+              - cell [ref=e460]
+              - cell "SHORTLISTED" [ref=e461]:
+                - combobox [ref=e462]:
+                  - option "APPLIED"
+                  - option "SHORTLISTED" [selected]
+                  - option "INTERVIEW SCHEDULED"
+                  - option "INTERVIEWED"
+                  - option "SELECTED"
+                  - option "REJECTED"
+                  - option "HOLD"
+                  - option "WITHDRAWN"
+              - cell "-" [ref=e463]
+              - cell "5/26/2026" [ref=e464]
+            - row "Carol Patel 9876543212 carol@demo.com 7y APPLIED - 5/26/2026" [ref=e465] [cursor=pointer]:
+              - cell "Carol Patel" [ref=e466]
+              - cell "9876543212" [ref=e467]
+              - cell "carol@demo.com" [ref=e468]:
+                - generic [ref=e469]: carol@demo.com
+              - cell [ref=e470]
+              - cell "7y" [ref=e471]
+              - cell [ref=e472]
+              - cell "APPLIED" [ref=e473]:
+                - combobox [ref=e474]:
+                  - option "APPLIED" [selected]
+                  - option "SHORTLISTED"
+                  - option "INTERVIEW SCHEDULED"
+                  - option "INTERVIEWED"
+                  - option "SELECTED"
+                  - option "REJECTED"
+                  - option "HOLD"
+                  - option "WITHDRAWN"
+              - cell "-" [ref=e475]
+              - cell "5/26/2026" [ref=e476]
+            - row "David Kumar 9876543213 david@demo.com 4y APPLIED - 5/26/2026" [ref=e477] [cursor=pointer]:
+              - cell "David Kumar" [ref=e478]
+              - cell "9876543213" [ref=e479]
+              - cell "david@demo.com" [ref=e480]:
+                - generic [ref=e481]: david@demo.com
+              - cell [ref=e482]
+              - cell "4y" [ref=e483]
+              - cell [ref=e484]
+              - cell "APPLIED" [ref=e485]:
+                - combobox [ref=e486]:
+                  - option "APPLIED" [selected]
+                  - option "SHORTLISTED"
+                  - option "INTERVIEW SCHEDULED"
+                  - option "INTERVIEWED"
+                  - option "SELECTED"
+                  - option "REJECTED"
+                  - option "HOLD"
+                  - option "WITHDRAWN"
+              - cell "-" [ref=e487]
+              - cell "5/26/2026" [ref=e488]
+            - row "Eva Singh 9876543214 eva@demo.com 6y APPLIED - 5/26/2026" [ref=e489] [cursor=pointer]:
+              - cell "Eva Singh" [ref=e490]
+              - cell "9876543214" [ref=e491]
+              - cell "eva@demo.com" [ref=e492]:
+                - generic [ref=e493]: eva@demo.com
+              - cell [ref=e494]
+              - cell "6y" [ref=e495]
+              - cell [ref=e496]
+              - cell "APPLIED" [ref=e497]:
+                - combobox [ref=e498]:
+                  - option "APPLIED" [selected]
+                  - option "SHORTLISTED"
+                  - option "INTERVIEW SCHEDULED"
+                  - option "INTERVIEWED"
+                  - option "SELECTED"
+                  - option "REJECTED"
+                  - option "HOLD"
+                  - option "WITHDRAWN"
+              - cell "-" [ref=e499]
+              - cell "5/26/2026" [ref=e500]
+  - region

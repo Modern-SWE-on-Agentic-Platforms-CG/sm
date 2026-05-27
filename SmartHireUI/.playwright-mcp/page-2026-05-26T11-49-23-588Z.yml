@@ -1,0 +1,39 @@
+- generic [ref=e5]:
+  - complementary [ref=e6]:
+    - navigation [ref=e7]:
+      - link "Dashboard" [active] [ref=e8] [cursor=pointer]:
+        - /url: /dashboard
+        - img [ref=e9]
+        - generic [ref=e11]: Dashboard
+      - link "Candidates" [ref=e12] [cursor=pointer]:
+        - /url: /candidates
+        - img [ref=e13]
+        - generic [ref=e15]: Candidates
+      - link "Scheduling" [ref=e16] [cursor=pointer]:
+        - /url: /scheduling
+        - img [ref=e17]
+        - generic [ref=e19]: Scheduling
+      - link "Feedback" [ref=e20] [cursor=pointer]:
+        - /url: /feedback
+        - img [ref=e21]
+        - generic [ref=e23]: Feedback
+      - link "Reports" [ref=e24] [cursor=pointer]:
+        - /url: /reports
+        - img [ref=e25]
+        - generic [ref=e27]: Reports
+  - generic [ref=e28]:
+    - banner [ref=e29]:
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - button "Toggle sidebar" [ref=e32]:
+            - img [ref=e33]
+          - heading "SmartHire" [level=1] [ref=e35]
+        - generic [ref=e36]:
+          - generic [ref=e37]:
+            - generic [ref=e38]:
+              - paragraph [ref=e39]: Recruiter
+              - paragraph [ref=e40]: Recruiter
+            - generic [ref=e41]: R
+          - button "Logout" [ref=e42]
+    - main [ref=e43]
+  - region

@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: smarthire-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: smarthiredb001
+      POSTGRES_USER: smarthire
+      POSTGRES_PASSWORD: smarthire
+    ports:
+      - "5432:5432"
+    volumes:
+      - smarthire_pgdata:/var/lib/postgresql/data
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U smarthire -d smarthiredb001"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: smarthire-app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    ports:
+      - "8083:8083"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://smarthire:smarthire@db:5432/smarthiredb001
+
+volumes:
+  smarthire_pgdata:

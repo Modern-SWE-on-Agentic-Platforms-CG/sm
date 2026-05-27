@@ -1,0 +1,107 @@
+- generic [ref=e5]:
+  - complementary [ref=e6]:
+    - navigation [ref=e7]:
+      - link "Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard
+        - img [ref=e9]
+        - generic [ref=e11]: Dashboard
+      - link "Candidates" [ref=e12] [cursor=pointer]:
+        - /url: /candidates
+        - img [ref=e13]
+        - generic [ref=e15]: Candidates
+      - link "Scheduling" [ref=e16] [cursor=pointer]:
+        - /url: /booking/form
+        - img [ref=e17]
+        - generic [ref=e19]: Scheduling
+      - link "To-Do List" [ref=e20] [cursor=pointer]:
+        - /url: /todo-list
+        - img [ref=e21]
+        - generic [ref=e23]: To-Do List
+  - generic [ref=e24]:
+    - banner [ref=e25]:
+      - generic [ref=e26]:
+        - generic [ref=e27]:
+          - button "Toggle sidebar" [ref=e28]:
+            - img [ref=e29]
+          - heading "SmartHire" [level=1] [ref=e31]
+        - generic [ref=e32]:
+          - generic [ref=e33]:
+            - generic [ref=e34]:
+              - paragraph [ref=e35]: Recruiter
+              - paragraph [ref=e36]: Recruiter
+            - generic [ref=e37]: R
+          - button "Logout" [ref=e38]
+    - main [ref=e39]:
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - heading "Interview Calendar" [level=1] [ref=e49]
+          - button "+ Add Slot" [ref=e50]
+        - generic [ref=e53]:
+          - generic [ref=e54]:
+            - button "Previous month" [ref=e191]: ‹
+            - heading "May 2026" [level=2] [ref=e192]
+            - button "Next month" [ref=e193]: ›
+          - generic [ref=e194]:
+            - generic [ref=e195]: Available
+            - generic [ref=e197]: Booked
+            - generic [ref=e199]: Interviewed
+            - generic [ref=e201]: Na
+            - generic [ref=e203]: Cancelled
+          - generic [ref=e205]:
+            - generic [ref=e206]: Sun
+            - generic [ref=e207]: Mon
+            - generic [ref=e208]: Tue
+            - generic [ref=e209]: Wed
+            - generic [ref=e210]: Thu
+            - generic [ref=e211]: Fri
+            - generic [ref=e212]: Sat
+          - generic [ref=e213]:
+            - generic [ref=e214]:
+              - generic [ref=e216] [cursor=pointer]: "26"
+              - generic [ref=e218] [cursor=pointer]: "27"
+              - generic [ref=e220] [cursor=pointer]: "28"
+              - generic [ref=e222] [cursor=pointer]: "29"
+              - generic [ref=e224] [cursor=pointer]: "30"
+              - generic [ref=e226] [cursor=pointer]: "1"
+              - generic [ref=e228] [cursor=pointer]: "2"
+            - generic [ref=e229]:
+              - generic [ref=e231] [cursor=pointer]: "3"
+              - generic [ref=e233] [cursor=pointer]: "4"
+              - generic [ref=e235] [cursor=pointer]: "5"
+              - generic [ref=e237] [cursor=pointer]: "6"
+              - generic [ref=e239] [cursor=pointer]: "7"
+              - generic [ref=e241] [cursor=pointer]: "8"
+              - generic [ref=e243] [cursor=pointer]: "9"
+            - generic [ref=e244]:
+              - generic [ref=e246] [cursor=pointer]: "10"
+              - generic [ref=e248] [cursor=pointer]: "11"
+              - generic [ref=e250] [cursor=pointer]: "12"
+              - generic [ref=e252] [cursor=pointer]: "13"
+              - generic [ref=e254] [cursor=pointer]: "14"
+              - generic [ref=e256] [cursor=pointer]: "15"
+              - generic [ref=e258] [cursor=pointer]: "16"
+            - generic [ref=e259]:
+              - generic [ref=e261] [cursor=pointer]: "17"
+              - generic [ref=e263] [cursor=pointer]: "18"
+              - generic [ref=e265] [cursor=pointer]: "19"
+              - generic [ref=e267] [cursor=pointer]: "20"
+              - generic [ref=e269] [cursor=pointer]: "21"
+              - generic [ref=e271] [cursor=pointer]: "22"
+              - generic [ref=e273] [cursor=pointer]: "23"
+            - generic [ref=e274]:
+              - generic [ref=e276] [cursor=pointer]: "24"
+              - generic [ref=e278] [cursor=pointer]: "25"
+              - generic [ref=e280] [cursor=pointer]: "26"
+              - generic [ref=e282] [cursor=pointer]: "27"
+              - generic [ref=e284] [cursor=pointer]: "28"
+              - generic [ref=e286] [cursor=pointer]: "29"
+              - generic [ref=e288] [cursor=pointer]: "30"
+            - generic [ref=e289]:
+              - generic [ref=e291] [cursor=pointer]: "31"
+              - generic [ref=e293] [cursor=pointer]: "1"
+              - generic [ref=e295] [cursor=pointer]: "2"
+              - generic [ref=e297] [cursor=pointer]: "3"
+              - generic [ref=e299] [cursor=pointer]: "4"
+              - generic [ref=e301] [cursor=pointer]: "5"
+              - generic [ref=e303] [cursor=pointer]: "6"
+  - region

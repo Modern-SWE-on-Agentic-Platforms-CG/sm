@@ -1,0 +1,14 @@
+- generic [ref=e6]:
+  - generic [ref=e7]:
+    - img [ref=e9]
+    - heading "SmartHire" [level=1] [ref=e11]
+    - paragraph [ref=e12]: Intelligent Hiring Platform
+  - paragraph [ref=e14]: Dev Mode — Select a role to sign in
+  - paragraph [ref=e23]: "Login failed: Failed to fetch"
+  - generic [ref=e15]:
+    - button "Recruiter" [ref=e16]
+    - button "PMO" [ref=e17]
+    - button "Interviewer" [ref=e18]
+    - button "Tower Lead" [ref=e19]
+    - button "Admin" [ref=e20]
+    - button "SPOC" [ref=e21]

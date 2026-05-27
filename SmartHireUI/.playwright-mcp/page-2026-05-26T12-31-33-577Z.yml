@@ -1,0 +1,80 @@
+- generic [ref=e20]:
+  - complementary [ref=e21]:
+    - navigation [ref=e22]:
+      - link "Dashboard" [ref=e23] [cursor=pointer]:
+        - /url: /dashboard
+        - img [ref=e24]
+        - generic [ref=e26]: Dashboard
+      - link "Scheduling" [ref=e27] [cursor=pointer]:
+        - /url: /booking/form
+        - img [ref=e28]
+        - generic [ref=e30]: Scheduling
+      - link "Feedback" [active] [ref=e31] [cursor=pointer]:
+        - /url: /feedback
+        - img [ref=e32]
+        - generic [ref=e34]: Feedback
+      - link "To-Do List" [ref=e35] [cursor=pointer]:
+        - /url: /todo-list
+        - img [ref=e36]
+        - generic [ref=e38]: To-Do List
+  - generic [ref=e39]:
+    - banner [ref=e40]:
+      - generic [ref=e41]:
+        - generic [ref=e42]:
+          - button "Toggle sidebar" [ref=e43]:
+            - img [ref=e44]
+          - heading "SmartHire" [level=1] [ref=e46]
+        - generic [ref=e47]:
+          - generic [ref=e48]:
+            - generic [ref=e49]:
+              - paragraph [ref=e50]: Interviewer
+              - paragraph [ref=e51]: Recruiter
+            - generic [ref=e52]: I
+          - button "Logout" [ref=e53]
+    - main [ref=e54]:
+      - generic [ref=e65]:
+        - heading "Interview Feedback" [level=1] [ref=e66]
+        - generic [ref=e67]:
+          - heading "Candidate Info" [level=2] [ref=e68]
+          - generic [ref=e69]:
+            - generic [ref=e70]:
+              - term [ref=e71]: Name
+              - definition [ref=e72]: —
+            - generic [ref=e73]:
+              - term [ref=e74]: Technology
+              - definition
+            - generic [ref=e75]:
+              - term [ref=e76]: Interview Type
+              - definition [ref=e77]: —
+            - generic [ref=e78]:
+              - term [ref=e79]: Interviewer
+              - definition [ref=e80]: —
+            - generic [ref=e81]:
+              - term [ref=e82]: Date
+              - definition [ref=e83]: —
+            - generic [ref=e84]:
+              - term [ref=e85]: Time
+              - definition [ref=e86]: — – —
+        - generic [ref=e87]:
+          - generic [ref=e88]:
+            - heading "Overall" [level=3] [ref=e89]
+            - generic [ref=e90]:
+              - generic [ref=e91]: Overall Remark *
+              - combobox "Overall Remark *" [ref=e92]:
+                - option "Select remark" [selected]
+                - option "Highly Recommended"
+                - option "Recommended"
+                - option "Neutral"
+                - option "Not Recommended"
+                - option "Rejected"
+            - generic [ref=e93]:
+              - generic [ref=e94]: Feedback Status *
+              - combobox "Feedback Status *" [ref=e95]:
+                - option "Select status" [selected]
+                - option "Select"
+                - option "Reject"
+                - option "Hold"
+          - generic [ref=e96]:
+            - button "Submit Feedback" [disabled] [ref=e97]
+            - button "Cancel" [ref=e98]
+  - region
